@@ -3,26 +3,22 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
-from blog.models import Post
+from blog.models import Post, Comment
+from .forms_comment import CommentForm
 
 
 def home(request):
-
     posts = (
         Post.objects
         .filter(status='ON')
         .select_related('user')
         .order_by('-created_at')
     )
-
     return render(request, "blog/home.html", {"posts": posts})
 
 
 def about(request):
     return render(request, "blog/about.html")
-
-# Só acessa profile() se estiver logado
-# Não está logado, vai para '/accounts/login/'
 
 
 @login_required
@@ -42,13 +38,31 @@ def signup(request):
     return render(request, "registration/signup.html", {"form": form})
 
 
+# Função post_detail atualizada com comentários
 def post_detail(request, id):
     post = get_object_or_404(Post, id=id, status='ON')
-    return render(request, 'blog/post_detail.html', {'post': post})
+    comments = Comment.objects.filter(post=post, status='ON').order_by('-created_at')
+
+    if request.method == "POST" and request.user.is_authenticated:
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.post = post
+            comment.save()
+            return redirect('post_detail', id=post.id)
+    else:
+        form = CommentForm()
+
+    return render(request, 'blog/post_detail.html', {
+        'post': post,
+        'comments': comments,
+        'form': form
+    })
+
 
 @login_required
 def new_post(request):
-
     if request.method == "POST":
         title = request.POST.get("title")
         content = request.POST.get("content")
@@ -64,13 +78,10 @@ def new_post(request):
 
     return render(request, "blog/new_post.html")
 
+
 @login_required
 def delete_post(request, id):
-    post = get_object_or_404(
-        Post,
-        id=id,
-        status='ON'
-    )
+    post = get_object_or_404(Post, id=id, status='ON')
 
     if post.user != request.user:
         return redirect('home')
@@ -80,13 +91,10 @@ def delete_post(request, id):
 
     return redirect('home')
 
+
 @login_required
 def edit_post(request, id):
-    post = get_object_or_404(
-        Post,
-        id=id,
-        status='ON'
-    )
+    post = get_object_or_404(Post, id=id, status='ON')
 
     # só o dono pode editar
     if post.user != request.user:
@@ -100,7 +108,6 @@ def edit_post(request, id):
             post.title = title
             post.content = content
             post.save(update_fields=['title', 'content'])
-
             return redirect('post_detail', id=post.id)
 
     return render(request, 'blog/edit_post.html', {

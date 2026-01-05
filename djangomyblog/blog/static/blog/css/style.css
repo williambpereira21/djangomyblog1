@@ -31,7 +31,6 @@ a {
     text-decoration: none;
 }
 
-/* Comportamento dos links com o ponteiro sobre eles */
 a:hover {
     color: orangered;
 }
@@ -54,12 +53,10 @@ header {
     padding: .5rem;
 }
 
-/* Título no cabeçalho */
 header h1 {
     margin: 0;
 }
 
-/* Menu principal */
 header nav {
     margin-top: .5rem;
     padding-top: .5rem;
@@ -69,7 +66,6 @@ header nav {
     justify-content: center;
 }
 
-/* Comportamento dos links do menu */
 header nav a {
     color: white;
     padding: .5rem 1rem;
@@ -78,7 +74,6 @@ header nav a {
     font-weight: bold;
 }
 
-/* Comportamento dos links do menu com o ponteiro do mouse sobre */
 header nav a:hover {
     color: orange;
     background-color: rgba(255, 255, 255, .35);
@@ -110,6 +105,7 @@ footer {
     padding: .5rem;
 }
 
+/* Botão logout */
 .btn-logout {
     display: inline;
 }
@@ -128,4 +124,121 @@ footer {
 .btn-logout button:hover {
     color: orange;
     background-color: rgba(255, 255, 255, .35);
+}
+
+/* Formulários */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    width: 100%;
+}
+
+button, input[type="submit"] {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #0071c1;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #ff6600;
+}
+
+/* Container de posts */
+.posts-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+/* Cada card de post */
+.post-card {
+    background-color: #fefefe;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    padding: 1rem 1.5rem;
+    width: 300px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Efeito hover nos cards */
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* Título do post */
+.post-card h3 {
+    margin-top: 0;
+    color: #0071c1;
+}
+
+/* Link do título */
+.post-card h3 a {
+    color: #0071c1;
+    text-decoration: none;
+}
+
+.post-card h3 a:hover {
+    color: #ff6600;
+}
+
+/* Pequeno resumo do post */
+.post-card p {
+    margin: 0.5rem 0;
+    color: #333;
+}
+
+/* Informações do autor e data */
+.post-card small {
+    display: block;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+/* Link "Ler mais" */
+.post-card .read-more a {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    background-color: #0071c1;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.post-card .read-more a:hover {
+    background-color: #ff6600;
+    color: #fff;
+}
+
+/* Responsivo: empilha os cards em telas pequenas */
+@media (max-width: 768px) {
+    .posts-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .post-card {
+        width: 90%;
+    }
 }
