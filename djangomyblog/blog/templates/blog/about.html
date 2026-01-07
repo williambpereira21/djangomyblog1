@@ -1,3 +1,5 @@
+{# djangomyblog\blog\templates\blog\about.html #}
+
 {% extends "blog/_base.html" %}
 
 {% block title %}Sobre{% endblock %}
@@ -25,5 +27,36 @@
 
     <h4>Contato</h4>
     <p>Para dúvidas ou sugestões, envie um e-mail para: <a href="mailto:contato@blog.com">contato@blog.com</a></p>
+
+    <hr>
+
+    <!-- Formulário de Comentários -->
+    <h3 class="mt-4">Comentários</h3>
+
+    {% if user.is_authenticated %}
+    <form method="post" class="comment-form mb-4">
+        {% csrf_token %}
+        {{ form.comment }}
+        <button type="submit">Enviar</button>
+    </form>
+    {% else %}
+    <p class="comment-empty">Faça login para comentar.</p>
+    {% endif %}
+
+    <!-- Lista de Comentários com scroll -->
+    <div class="comment-list" style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+        {% for comment in comments %}
+        <div class="comment-item mb-3 p-2 border rounded">
+            <div class="comment-meta mb-1">
+                <strong>{{ comment.user.username }}</strong> em {{ comment.created_at|date:"d/m/Y H:i" }}
+            </div>
+            <div class="comment-content">
+                {{ comment.comment }}
+            </div>
+        </div>
+        {% empty %}
+        <p class="comment-empty">Sem comentários ainda.</p>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

@@ -6,23 +6,27 @@
 
 {% block content %}
 
-<h2>Posts Recentes</h2>
-<p><small>Ordenados pela data mais recente.</small></p>
+<div class="container mt-4">
+    <h2 class="mb-3">Posts Recentes</h2>
+    <p><small>Ordenados pela data mais recente.</small></p>
 
-<div class="posts-container">
-    {% for post in posts %}
-    <div class="post-card">
-        <h3><a href="/post/{{ post.id }}">{{ post.title }}</a></h3>
-        <p>{{ post.content|truncatechars:120 }}</p>
-        <small>
-            Por <strong>{{ post.user.username }}</strong>
-            em {{ post.created_at|date:"d/m/Y à\s H:i" }}
-        </small>
-        <div class="read-more">
-            <a href="/post/{{ post.id }}">Ler mais...</a>
+    <div class="posts-container">
+        {% for post in posts %}
+        <div class="post-card">
+            <h3><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>
+            <p>{{ post.content|truncatechars:120 }}</p>
+            <small>
+                Por <strong>{{ post.user.username }}</strong>
+                em {{ post.created_at|date:"d/m/Y H:i" }}
+            </small>
+            <div class="read-more">
+                <a href="{% url 'post_detail' post.id %}">Ler mais...</a>
+            </div>
         </div>
+        {% empty %}
+        <p>Nenhum post disponível no momento.</p>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 
 {% endblock %}

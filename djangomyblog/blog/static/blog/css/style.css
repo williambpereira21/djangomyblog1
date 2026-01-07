@@ -5,8 +5,7 @@
 }
 
 /* Formato da página: tamanhos e fonte */
-html,
-body {
+html, body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 16px;
     position: relative;
@@ -18,7 +17,12 @@ body {
 
 /* Fundo da página */
 body {
-    background-image: linear-gradient(rgb(0, 177, 193), rgb(0, 64, 70));
+    background-image:
+        linear-gradient(
+            rgba(0, 177, 193, 0.85),
+            rgba(0, 64, 70, 0.85)
+        ),
+        url("../images/background.jpg");
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
@@ -94,7 +98,7 @@ main {
     position: relative;
     flex-grow: 1;
     padding: 1rem 1.5rem;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.95);
 }
 
 /* Rodapé */
@@ -145,7 +149,8 @@ textarea {
     width: 100%;
 }
 
-button, input[type="submit"] {
+button,
+input[type="submit"] {
     padding: 0.5rem 1rem;
     border-radius: 5px;
     border: none;
@@ -156,8 +161,46 @@ button, input[type="submit"] {
     transition: background-color 0.2s;
 }
 
-button:hover, input[type="submit"]:hover {
+button:hover,
+input[type="submit"]:hover {
     background-color: #ff6600;
+}
+
+/* Comentários */
+.comment-list {
+    max-height: 400px; /* altura máxima da lista de comentários */
+    overflow-y: auto;  /* adiciona scroll se muitos comentários */
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.comment-item {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.comment-meta {
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 0.25rem;
+}
+
+.comment-content {
+    font-size: 1rem;
+    color: #333;
+}
+
+.comment-form textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.comment-empty {
+    color: #666;
+    font-style: italic;
 }
 
 /* Container de posts */
@@ -179,7 +222,6 @@ button:hover, input[type="submit"]:hover {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* Efeito hover nos cards */
 .post-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.25);
@@ -191,7 +233,6 @@ button:hover, input[type="submit"]:hover {
     color: #0071c1;
 }
 
-/* Link do título */
 .post-card h3 a {
     color: #0071c1;
     text-decoration: none;

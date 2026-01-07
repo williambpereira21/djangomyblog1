@@ -1,48 +1,46 @@
+{# djangomyblog\blog\templates\blog\post_detail.html #}
+
 {% extends "blog/_base.html" %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">{{ post.title }}</h2>
+    <p class="lead">{{ post.content }}</p>
+    <small>
+        Por <strong>{{ post.user.username }}</strong> em {{ post.created_at|date:"d/m/Y à\s H:i" }}
+    </small>
 
-<div class="post-card">
-    <h2>{{ post.title }}</h2>
-    <p class="post-meta">
-        Por <span>{{ post.user.username }}</span> em {{ post.created_at|date:"d/m/Y H:i" }}
-        {% if post.user.id == user.id %}
-        <small>
-            <a href="{% url 'edit_post' post.id %}" title="Editar Post">✏️</a>
-            <a href="{% url 'delete_post' post.id %}" title="Apagar Post" onclick="return confirm('Tem certeza que deseja apagar o Post? Isso é irreversível!')">🗑️</a>
-        </small>
-        {% endif %}
-    </p>
-    <p>{{ post.content }}</p>
-</div>
+    <hr>
 
-{# ---------- Formulário de Comentário ---------- #}
-{% if user.is_authenticated %}
-<form method="post" class="comment-form">
-    {% csrf_token %}
-    {{ form.comment }}
-    <button type="submit">Enviar</button>
-</form>
-{% else %}
-<p class="comment-empty">Faça login para comentar.</p>
-{% endif %}
+    <!-- Formulário de Comentários -->
+    <h3 class="mt-4">Comentários</h3>
 
-{# ---------- Lista de Comentários ---------- #}
-<div class="comment-list">
-    {% for comment in comments %}
-    <div class="comment-item">
-        <div class="comment-meta">
-            <span>{{ comment.user.username }}</span> em {{ comment.created_at|date:"d/m/Y H:i" }}
+    {% if user.is_authenticated %}
+    <form method="post" class="comment-form mb-4">
+        {% csrf_token %}
+        {{ form.comment }}
+        <button type="submit">Enviar</button>
+    </form>
+    {% else %}
+    <p class="comment-empty">Faça login para comentar.</p>
+    {% endif %}
+
+    <!-- Lista de Comentários com scroll -->
+    <div class="comment-list" style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+        {% for comment in comments %}
+        <div class="comment-item mb-3 p-2 border rounded">
+            <div class="comment-meta mb-1">
+                <strong>{{ comment.user.username }}</strong> em {{ comment.created_at|date:"d/m/Y H:i" }}
+            </div>
+            <div class="comment-content">
+                {{ comment.comment }}
+            </div>
         </div>
-        <div class="comment-content">
-            {{ comment.comment }}
-        </div>
+        {% empty %}
+        <p class="comment-empty">Sem comentários ainda.</p>
+        {% endfor %}
     </div>
-    {% empty %}
-    <p class="comment-empty">Sem comentários ainda.</p>
-    {% endfor %}
 </div>
-
 {% endblock %}
